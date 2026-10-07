@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+	</head>
+
+	<body class="margin-auto" ng-controller="appController">
+		<div class="app-container">
+		
+			<div class="section-card">
+				<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+					<table class="table table-bordered table-hover">
+						<thead style="background-color: lavender;">
+							<tr>
+								<td>应用ID</td>
+								<td>应用名称</td>
+								<td>应用描述</td>
+								<td>维度信息</td>
+								<td>应用类型</td>
+								<td>应用结果</td>
+								<td>操作</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="demon in options.apps track by demon.idRuleApplication">
+								<td>{{demon.idRuleApplication}}</td>
+								<td>{{demon.applicationName}}</td>
+								<td>{{demon.applicationDesc}}</td>
+								<td>
+									<span ng-if="demon.dimDefines && demon.dimDefines.length > 0" class="btn-add-row" style="margin-right: 4px;margin-bottom: 4px;" ng-repeat="appDim in demon.dimDefines track by appDim.idRmDimDefine">
+										{{::appDim.dimName}}
+									</span>
+								</td>
+								<td>
+									<span ng-if="demon.appType == '01'">规则流</span>
+									<span ng-if="demon.appType == '02'">流程集配置</span>
+								</td>
+								<td>
+									<span ng-if="demon.resultDefines && demon.resultDefines.length > 0" class="btn-add-row" style="margin-right: 4px;margin-bottom: 4px;" ng-repeat="appResult in demon.resultDefines track by appResult.applicationResultId">
+										{{::appResult.resultName}}
+									</span>
+								</td>
+								<td>
+									<button type="button" class="btn-remove-row" ng-click="showUpdate('show','appUpdateModal',demon)">
+										<i class="fas fa-times"></i>
+										修改
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal" id="appUpdateModal" tabindex="-1" style="display: none;">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width: 600px;">
+						<div class="modal-header">
+						</div>
+						<div class="modal-body">
+							<div style="padding:5px;" class="panel panel-default">
+								<form name="appForm" class="form-horizontal" role="form">
+									<!-- ====== 卡片1：基本信息 ====== -->
+									<section class="section-card">
+										<div class="section-title">
+											<span class="title-icon"><i class="fas fa-info-circle"></i></span>
+											基本信息
+											<span class="title-line"></span>
+										</div>
+								
+										<div class="form-grid">
+											<!-- 应用名称 -->
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													应用名称
+												</label>
+												<input ng-model="addDim.applicationName" required type="text" placeholder="请输入应用名称" value="" />
+											</div>
+								
+											<!-- 应用ID -->
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													应用ID
+												</label>
+												<input ng-model="addDim.idRuleApplication" disabled required type="text" placeholder="应用ID" value="" />
+											</div>
+
+											<!-- BOM -->
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													业务模型
+												</label>
+												<input ng-model="addDim.bomName" required type="text" disabled placeholder="BOM名称" value="" />
+											</div>
+								
+											<!-- 备注信息（占两列） -->
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+													备注信息
+												</label>
+												<textarea placeholder="请输入备注信息" required rows="2" ng-model="addDim.applicationDesc"></textarea>
+											</div>
+								
+										</div>
+									</section>
+								
+									<!-- ====== 卡片2：维度信息 ====== -->
+									<section class="section-card">
+										<div class="section-title">
+											<span class="title-icon"><i class="fas fa-brain"></i></span>
+											维度信息
+											<span class="title-line"></span>
+										</div>
+								
+										<div class="decision-grid">
+											<div class="field-group">
+												<label>
+													<i class="fas fa-database" style="color:#3b82f6;font-size:13px;"></i>
+													决策维度 <span style="color: red;margin-left: 10px;">！维度只能增加，不能减少。</span>
+												</label>
+												<custom-select required ng-model="addDim.path" options="options.dimList" label-key="name"
+													value-key="path" searchable="true" multiple="true"
+													placeholder="请选择一项">
+												</custom-select>
+											</div>
+										</div>
+
+										<div class="decision-grid">
+											<div class="field-group">
+												<label>
+													<i class="fas fa-database" style="color:#3b82f6;font-size:13px;"></i>
+													应用类型
+												</label>
+												<custom-select required ng-model="addDim.appType" options="options.appTypeList" label-key="name"
+															   value-key="path" disabled="true"
+															   placeholder="请选择一项">
+												</custom-select>
+											</div>
+										</div>
+									</section>
+								
+									<!-- ====== 卡片3：应用结果信息 ====== -->
+									<section class="section-card">
+										<div class="section-title">
+											<span class="title-icon"><i class="fas fa-brain"></i></span>
+											应用结果
+											<span class="title-line"></span>
+										</div>
+								
+										<div class="decision-grid">
+											<div class="field-group full-width">
+												<div class="result-table-wrapper">
+													<!-- 表格头部：标题 + 新增按钮 -->
+													<div class="table-header-actions">
+														<div class="table-title">
+															<i class="fas fa-list" style="color:#3b82f6;"></i>
+															应用输出结果 <span style="color: red;margin-left: 10px;">！应用结果只能增加，不能减少。</span>
+														</div>
+														<button type="button" class="btn-add-row" ng-click="addResultRow()">
+															<i class="fas fa-plus"></i>
+															新增1行
+														</button>
+													</div>
+								
+													<!-- 表格 -->
+													<div>
+														<table class="result-table">
+															<thead>
+																<tr>
+																	<th>序号</th>
+																	<th>结果值</th>
+																	<th>操作</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="row in addDim.resultDefines track by $index">
+																	<td>{{ $index + 1 }}</td>
+																	<td>
+																		<input type="text" class="result-input" ng-model="row.resultName"
+																			placeholder="请输入结果值..." ng-class="{'input-error': row.error}">
+																	</td>
+																	<td>
+																		<button ng-if="addDim.resultDefines.length > 1" type="button"
+																			class="btn-remove-row" ng-click="removeResultRow($index)">
+																			<i class="fas fa-times"></i>
+																			删除
+																		</button>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</section>
+								
+									<!-- ====== 底部操作按钮 ====== -->
+									<div class="form-actions">
+										<button class="btn btn-primary btn-glossy" ng-click="saveAppData(appForm)">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<!-- 公共组件 -->
+			<div ng-include="'../../docc/common/modal.html'"></div>
+			<div ng-include="'../../docc/common/tips.html'"></div>
+			
+		</div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/app/appList');
+	</script>
+
+</html>
