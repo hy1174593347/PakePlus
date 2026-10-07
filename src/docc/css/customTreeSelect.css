@@ -1,0 +1,137 @@
+/* ===== custom-tree-select 指令样式（对齐 custom-select） ===== */
+custom-tree-select {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+/* 外层容器 */
+.custom-tree-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* 输入框：与 .custom-select-input 保持一致 */
+.custom-tree-select-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 6px 36px 6px 10px !important;
+    font-size: 15px;
+    color: #0b1a33;
+    background: #fff;
+    border: 1px solid #dce1e9 !important;
+    border-radius: 10px !important;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.custom-tree-select-input:hover {
+    border-color: #b0c0d0;
+}
+
+.custom-tree-select-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.custom-tree-select-input::placeholder {
+    color: #b0bac9;
+}
+
+/* 禁用态 */
+.custom-tree-select-input:disabled,
+.custom-tree-select-input.is-disabled {
+    background: #f5f7fa;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* 下拉箭头：与 .arrow-icon 保持一致 */
+.custom-tree-select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1;
+    pointer-events: none;
+    transition: transform 0.2s;
+}
+
+.custom-tree-select-arrow.open {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* ===== 下拉面板：与 .custom-select-dropdown 保持一致 ===== */
+.custom-tree-select-panel {
+    position: fixed;             /* JS 中挂到 body 上，用 fixed 定位 */
+    z-index: 1050;
+    background: #fff;
+    border: 1px solid #dce1e9;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 0;
+    min-width: 180px;
+    box-sizing: border-box;
+    display: none;
+}
+
+.custom-tree-select-panel.open,
+.custom-tree-select-panel[style*="display: block"] {
+    display: block;
+}
+
+/* 选项：与 .select-option 保持一致 */
+.custom-tree-select-item {
+    padding: 8px 14px;
+    font-size: 15px;
+    color: #1e293b;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.1s;
+}
+
+.custom-tree-select-item:hover {
+    background: #f1f5f9;
+}
+
+.custom-tree-select-item.selected {
+    background: #e0edff;
+    color: #1e4a8a;
+}
+
+/* 空状态：与 .no-options 保持一致 */
+.custom-tree-select-empty {
+    padding: 12px 14px;
+    color: #94a3b8;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ===== 滚动条美化（与 custom-select 保持一致） ===== */
+.custom-tree-select-panel::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.custom-tree-select-panel::-webkit-scrollbar-track {
+    background: #f0f4f9;
+    border-radius: 8px;
+}
+.custom-tree-select-panel::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+}
+.custom-tree-select-panel::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
