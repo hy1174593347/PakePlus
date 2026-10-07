@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	    <title></title>
+	    <link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+	    <link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+		<link rel="stylesheet" href="../../docc/css/jsonEdit.css">
+	</head>
+	<body class="margin-auto" ng-controller="testController">
+        <div class="container py-4 app-container" style="max-width: 99%;min-height: 700px;">
+			<div class="d-flex justify-content-start align-items-center" style="margin-bottom: 10px;">应用：
+				<custom-select required ng-model="dim.idRuleApplication" options="options.apps" label-key="applicationName" style="width: 300px;"
+					value-key="idRuleApplication" ng-change="changeApp(dim.idRuleApplication)" searchable="true" multiple="false"
+					placeholder="请选择应用">
+				</custom-select>
+				<button style="margin-left: 10px;" class="btn btn-primary" ng-click="executeRule(dim.idRuleApplication)">执行</button>
+			</div>
+			<div class="d-flex justify-content-around align-items-center" style="margin-bottom: 10px;">
+				<div style="width: 33%;height: 100%;">
+					<label>入参bom</label>
+					<angular-jsoneditor ng-model="options.bomJson" options="ctrl.editorOptions" style="width: 100%; height: 600px;display: block;overflow: auto;">
+					</angular-jsoneditor>
+				</div>
+				<div style="width: 33%;height: 100%;">
+					<label>执行后的bom</label>
+					<angular-jsoneditor ng-model="options.bomResult" options="ctrl.editorOptions" style="width: 100%; height: 600px;display: block;overflow: auto;">
+					</angular-jsoneditor>
+				</div>
+				<div style="width: 33%;height: 100%;">
+					<label>规则执行结果</label>
+					<angular-jsoneditor ng-model="options.ruleResult" options="ctrl.editorOptions" style="width: 100%; height: 600px;display: block;overflow: auto;">
+					</angular-jsoneditor>
+				</div>
+			</div>
+		</div>
+		<div ng-include="'../../docc/common/modal.html'"></div>
+		<div ng-include="'../../docc/common/tips.html'"></div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+    <script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/lib/jsonEdit.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-jsonedit.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/system/ruleTest');
+	</script>
+</html>
