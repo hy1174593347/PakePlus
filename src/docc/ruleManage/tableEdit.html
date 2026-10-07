@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	    <title></title>
+	    <link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+	    <link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+        <link rel="stylesheet" href="../../docc/css/ruleEdit.css">
+		<link rel="stylesheet" href="../../docc/css/agGrid.css">
+		<link rel="stylesheet" href="../../docc/css/agTheme.css">
+		<link rel="stylesheet" href="../../docc/css/agGridExtend.css">
+		<link rel="stylesheet" href="../../docc/css/jsonEdit.css">
+	</head>
+	<body class="margin-auto" ng-controller="tableEditController">
+        <div class="container py-4" style="max-width: 99%;">
+			<!-- ⭐ 双栏布局容器 -->
+			<div class="editor-layout" ng-class="{collapsed: ctrl.previewCollapsed}">
+				<!-- 左侧：编辑器区域 -->
+				<div class="editor-wrapper">
+					<div class="editor-title d-flex justify-content-between align-items-center">
+						<form name="ruleForm" style="display: contents;" class="form-horizontal" role="form">
+							<div class="field-group" style="display: flex;">
+								<input ng-model="addDim.tableName" name="tableName" required type="text" placeholder="请输入决策表名称" value="决策表名称" />
+							</div>
+							<div style="display: flex; gap: 8px; flex-shrink: 0;">
+								<button type="button" class="btn btn-primary" ng-click="toBack()">
+									返回
+								</button>
+								<button type="button" class="btn btn-secondary" ng-click="clear()">
+									清空
+								</button>
+								<button class="btn btn-primary" ng-click="saveRule(ruleForm)">
+									保存
+								</button>
+							</div>
+						</form>
+					</div>
+				
+					<!-- 编辑器容器（相对定位，用于放置提示框） -->
+					<div style="position: relative;">
+						<h5 class="d-flex justify-content-between align-items-center editor-content-title" ng-click="ctrl.preCollapsed = !ctrl.preCollapsed">
+							⚡预定义
+							<button class="layout-toggle-btn editor-content-title-toggle-btn">
+								<i class="bi" ng-class="ctrl.preCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+							</button>
+						</h5>
+						<div ng-if="bomTree && bomTree.length > 0" ng-show="ctrl.preCollapsed" style="height: 100px;margin-bottom: 10px;" rule-editor tokens="preTokens" bom-tree="bomTree" operators="operators"
+							base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="true" edit-type="preRule"
+							get-property-by-class="getPropertyByClass(property)" placeholder="请输入空格获取提示">
+						</div>
+						<h5 class="d-flex justify-content-between align-items-center editor-content-title" ng-click="ctrl.whenCollapsed = !ctrl.whenCollapsed">
+							⚡如果
+							<button class="layout-toggle-btn editor-content-title-toggle-btn">
+								<i class="bi" ng-class="ctrl.whenCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+							</button>
+						</h5>
+						<div ng-if="bomTree && bomTree.length > 0" ng-show="ctrl.whenCollapsed" style="margin-bottom: 10px;" rule-editor tokens="editorTokens" bom-tree="bomTree" operators="operators"
+							base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="true" edit-type="whenRule"
+							get-property-by-class="getPropertyByClass(property)" placeholder="请输入空格获取提示">
+						</div>
+				
+						<!-- 提示框 (Suggestion Box) -->
+						<div class="suggestion-box" ng-class="{active: suggestion.visible}"
+							ng-style="{top: suggestion.top + 'px', left: suggestion.left + 'px'}">
+							<div class="suggestion-item" ng-repeat="item in suggestion.items" ng-click="selectSuggestion(item)">
+								<span class="item-icon">{{ item.type === 'property' ? '🟢' : (item.type === 'method' ? '⚪' : '🔵')}}</span>
+								<span class="item-text">{{ item.name }}</span>
+							</div>
+						</div>
+
+						<div class="grid-wrapper">
+							<div ag-grid="gridOptions" class="ag-theme-balham" style="height: 400px; width: 100%;">
+							</div>
+
+							<div class="ag-context-menu"
+								 ng-show="ctxMenu.visible"
+								 ng-style="{ left: ctxMenu.x + 'px', top: ctxMenu.y + 'px' }">
+								<div class="ag-context-menu-item"
+									 ng-click="ctxMenuAction('insertColLeft')">在左侧增加一列</div>
+								<div class="ag-context-menu-item"
+									 ng-click="ctxMenuAction('insertColRight')">在右侧增加一列</div>
+
+								<!-- ★ 行操作：只在非表头行（pinned 行）右键时显示 -->
+								<div ng-if="!ctxMenu.rowPinned">
+									<div class="ag-context-menu-sep"></div>
+									<div class="ag-context-menu-item"
+										 ng-click="ctxMenuAction('insertRowAbove')">在上方增加一行</div>
+									<div class="ag-context-menu-item"
+										 ng-click="ctxMenuAction('insertRowBelow')">在下方增加一行</div>
+									<div class="ag-context-menu-sep"></div>
+									<div class="ag-context-menu-item danger"
+										 ng-click="ctxMenuAction('deleteRow')">删除行</div>
+								</div>
+
+								<div class="ag-context-menu-sep"></div>
+								<div class="ag-context-menu-item danger"
+									 ng-click="ctxMenuAction('deleteCol')">删除列</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<!-- 中间：展开/收起切换按钮 -->
+				<button class="layout-toggle-btn" ng-click="ctrl.previewCollapsed = !ctrl.previewCollapsed"
+					title="{{ctrl.previewCollapsed ? '展开预览' : '收起预览'}}">
+					<i class="bi" ng-class="ctrl.previewCollapsed ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
+				</button>
+			
+				<!-- 调试区域：展示选中的数据路径 -->
+				<div class="debug-area">
+					<h4 class="d-flex justify-content-end align-items-center">
+						<button type="button" class="btn btn-primary" ng-click="previewSave()">解析</button>
+					</h4>
+					<div style="width: 100%;height: 100%;">
+						<label>⚡ 要保存的数据</label>
+						<angular-jsoneditor ng-model="tempSave" options="ctrl.editorOptions" style="width: 100%; height: 600px;display: block;overflow: auto;">
+						</angular-jsoneditor>
+					</div>
+					<!-- 状态栏 -->
+					<div class="status-bar">
+						<div class="status-item">
+							<span class="label">📊 Token</span>
+							<span class="value highlight">{{preTokens.length + editorTokens.length}}</span>
+						</div>
+					
+						<div class="status-divider"></div>
+					
+						<div class="status-item">
+							<span class="label">📌 光标位置</span>
+							<span class="value">0</span>
+						</div>
+					
+						<div style="flex:1"></div>
+					
+						<div class="status-item">
+							<span style="display:flex;align-items:center;gap:4px;color:#8a9aa8;font-size:12px;">
+								<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;"></span>
+								就绪
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+
+		<div ng-include="'../../docc/common/modal.html'"></div>
+		<div ng-include="'../../docc/common/tips.html'"></div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+    <script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/lib/agGrid.js"></script>
+	<script src="../../js/lib/jsonEdit.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-jsonedit.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleManage/tableEdit');
+	</script>
+</html>
