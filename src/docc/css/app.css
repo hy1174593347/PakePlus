@@ -1,0 +1,181 @@
+ /* ===== 结果表格样式 ===== */
+ .result-table-wrapper {
+     margin-top: 4px;
+ }
+
+ .result-table-wrapper .table-header-actions {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 12px;
+     flex-wrap: wrap;
+     gap: 10px;
+ }
+
+ .result-table-wrapper .table-header-actions .table-title {
+     font-size: 13px;
+     font-weight: 500;
+     color: #475569;
+     display: flex;
+     align-items: center;
+     gap: 6px;
+ }
+
+ .result-table-wrapper .table-header-actions .table-title .count-badge {
+     background: #eef2f6;
+     color: #475569;
+     font-size: 11px;
+     padding: 1px 10px;
+     border-radius: 12px;
+     font-weight: 500;
+ }
+
+ .result-table {
+     width: 100%;
+     border-collapse: collapse;
+     background: #ffffff;
+     border-radius: 10px;
+     overflow: hidden;
+     border: 1px solid #e9edf2;
+ }
+
+ .result-table thead {
+     background: #f8fafc;
+ }
+
+ .result-table thead th {
+     padding: 10px 14px;
+     text-align: left;
+     font-size: 12px;
+     font-weight: 600;
+     color: #475569;
+     border-bottom: 1px solid #e9edf2;
+     letter-spacing: 0.3px;
+     text-transform: uppercase;
+ }
+
+ .result-table thead th:first-child {
+     width: 60px;
+     text-align: center;
+ }
+
+ .result-table thead th:last-child {
+     width: 80px;
+     text-align: center;
+ }
+
+ .result-table tbody tr {
+     transition: background 0.15s;
+     border-bottom: 1px solid #f1f5f9;
+ }
+
+ .result-table tbody tr:last-child {
+     border-bottom: none;
+ }
+
+ .result-table tbody tr:hover {
+     background: #fafcfe;
+ }
+
+ .result-table tbody td {
+     padding: 8px 14px;
+     vertical-align: middle;
+     font-size: 14px;
+     color: #1e293b;
+ }
+
+ .result-table tbody td:first-child {
+     text-align: center;
+     font-weight: 500;
+     color: #94a3b8;
+     font-size: 13px;
+ }
+
+ .result-table tbody td:last-child {
+     text-align: center;
+ }
+
+ /* 表格内输入框 */
+ .result-table .result-input {
+     width: 100%;
+     padding: 6px 12px;
+     border: 1px solid #dce1e9;
+     border-radius: 6px;
+     font-size: 14px;
+     font-family: inherit;
+     color: #0b1a33;
+     background: #ffffff;
+     transition: border-color 0.2s, box-shadow 0.2s;
+     outline: none;
+ }
+
+ .result-table .result-input:focus {
+     border-color: #3b82f6;
+     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.10);
+ }
+
+ .result-table .result-input::placeholder {
+     color: #b0bac9;
+     font-size: 13px;
+ }
+
+ .result-table .result-input.input-error {
+     border-color: #ef4444;
+ }
+
+ .result-table .result-input.input-error:focus {
+     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+ }
+
+ /* 空状态 */
+ .result-table-empty {
+     padding: 32px 20px;
+     text-align: center;
+     color: #b0bac9;
+     font-size: 14px;
+ }
+
+ .result-table-empty i {
+     font-size: 32px;
+     display: block;
+     margin-bottom: 10px;
+     opacity: 0.4;
+ }
+
+ /* 响应式 */
+ @media (max-width: 600px) {
+
+     .result-table thead th,
+     .result-table tbody td {
+         padding: 6px 10px;
+         font-size: 13px;
+     }
+
+     .result-table thead th:first-child {
+         width: 40px;
+     }
+
+     .result-table thead th:last-child {
+         width: 60px;
+     }
+
+     .result-table .result-input {
+         padding: 4px 10px;
+         font-size: 13px;
+     }
+
+     .btn-remove-row {
+         width: 28px;
+         height: 28px;
+         font-size: 14px;
+     }
+
+     .result-table-wrapper .table-header-actions {
+         flex-direction: column;
+         align-items: stretch;
+     }
+
+     .btn-add-row {
+         justify-content: center;
+     }
+ }
