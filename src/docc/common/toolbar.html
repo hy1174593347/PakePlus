@@ -1,0 +1,51 @@
+<div id="sidebar" class="d-flex flex-column bg-dark text-white" style="min-height: 100vh;background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <ul class="list-unstyled mb-0 flex-grow-1 overflow-auto" id="main-menu">
+    <!-- 固定菜单项 -->
+    <!-- <li>
+      <a href="javascript:void(0)" class="menu-item d-block px-3 py-2 text-decoration-none text-white-50 hover-bg text-center"
+         ng-click="showContent('/docc/common/menu.html')">
+        <i class="bi bi-plus-square me-2"></i>新增菜单
+      </a>
+    </li> -->
+
+    <!-- 动态菜单项 -->
+    <li ng-repeat="menu in menuList track by $index">
+      <!-- 无子菜单 -->
+      <a ng-if="!menu.children || menu.children.length === 0"
+         href="javascript:void(0)"
+         class="menu-item d-block px-3 py-2 text-decoration-none text-white-50 hover-bg text-center"
+         ng-class="{'active text-white bg-primary': currentUrl === menu.menuLink}"
+         ng-click="showContent(menu.menuLink)">
+         <i>{{menu.menuIconLink}}</i>
+        {{ menu.menuName }}
+      </a>
+
+      <!-- 有子菜单 -->
+      <div ng-if="menu.children && menu.children.length > 0">
+        <a href="javascript:void(0)"
+           class="menu-item d-flex justify-content-between align-items-center px-3 py-2 text-decoration-none text-white-50 hover-bg"
+           ng-class="{'text-white': menu.show}"
+           ng-click="menu.show = !menu.show">
+          <i>{{menu.menuIconLink}}</i>
+          <span class="flex-grow-1 text-center">{{ menu.menuName }}</span>
+          <i class="bi bi-chevron-down transition-arrow" ng-class="{'rotate-180': menu.show}"></i>
+        </a>
+
+        <!-- 使用 uib-collapse 或 ng-show + CSS 过渡替代原生 data-bs-toggle -->
+        <div class="submenu overflow-hidden" ng-show="menu.show">
+          <ul class="list-unstyled mb-0 bg-black bg-opacity-25">
+            <li ng-repeat="child in menu.children track by $index">
+              <a href="javascript:void(0)"
+                 class="menu-item d-block ps-5 pe-3 py-2 text-decoration-none text-white-50 hover-bg small"
+                 ng-class="{'active text-white bg-primary': currentUrl === child.menuLink}"
+                 ng-click="showContent(child.menuLink)">
+                <i>{{child.menuIconLink}}</i>
+                {{ child.menuName }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
