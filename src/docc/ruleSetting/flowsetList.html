@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	    <title></title>
+	    <link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+	    <link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+	</head>
+	<body class="margin-auto" ng-controller="flowsetController">
+        <div class="container py-4 app-container" style="max-width: 99%;min-height: 700px;">
+			<form name="queryForm" class="form-horizontal" role="form">
+				<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 10px;">
+					<div class="d-flex justify-content-start align-items-center">应用：
+						<custom-select required ng-model="dim.idRuleApplication" options="options.apps" label-key="applicationName" style="width: 300px;"
+							value-key="idRuleApplication" ng-change="changeApp(dim.idRuleApplication)" searchable="true" multiple="false"
+							placeholder="请选择应用">
+						</custom-select>
+					</div>
+					<div class="d-flex align-items-center">
+						运行环境：
+						<label style="margin-right: 10px;"><input type="radio" required name="runFlag" ng-model="dim.runFlag" value="0" ng-change="resetFlow(dim.runFlag)" /> 设置态</label>
+						<label style="margin-right: 10px;"><input type="radio" required name="runFlag" ng-model="dim.runFlag" value="3" ng-change="resetFlow(dim.runFlag)" /> 待审批</label>
+						<label><input type="radio" name="runFlag" required ng-model="dim.runFlag" value="1" ng-change="resetFlow(dim.runFlag)" /> 运行态</label>
+					</div>
+				</div>
+				<div class="d-flex justify-content-start align-items-center" style="margin-bottom: 10px;">
+					<div class="d-flex justify-content-start align-items-center" ng-repeat="demon in options.dims">
+						<div>{{demon.dimName}}：</div>
+						<custom-select ng-if="demon.baseType" ng-init="intDimData(demon.baseType,demon.idRuleDimDefine,demon.dimFieldPath,$index,demon.dimSort)" required ng-model="dim.dimSettingDTOList[$index].dimValue" style="width: 300px;"
+							options="options.dims[demon.dimFieldPath]" label-key="baseName" value-key="baseCode" searchable="true" ng-change="dim.dimSettingDTOList[$index].dimName = demon.dimName"
+							multiple="false" placeholder="请选择{{demon.dimName}}">
+						</custom-select>
+						<div class="field-group" ng-if="!demon.baseType">
+							<input type="text" ng-init="intDimData(demon.baseType,demon.idRuleDimDefine,demon.dimFieldPath,$index,demon.dimSort)" ng-model="dim[dimFieldPath].dimValue" placeholder="请输入{{demon.dimName}}">
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-around align-items-center" style="margin-bottom: 10px;">
+					<button class="btn btn-primary" ng-click="query(queryForm)">查询</button>
+					<button ng-show="dim.runFlag==0" class="btn btn-primary" ng-click="approval(queryForm)">申请审批</button>
+					<button ng-show="dim.runFlag==3" class="btn btn-primary" ng-click="approvalSuccess(queryForm)">审批通过</button>
+					<button ng-show="dim.runFlag==0" type="button" class="btn btn-primary" ng-click="addFlow()">新增流程</button>
+				</div>
+			</form>
+			<div class="section-card">
+				<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+					<table class="table table-bordered table-hover">
+						<thead style="background-color: lavender;">
+							<tr>
+								<td style="width:100px;text-align: center;"><input type="checkbox" ng-model="dim.checkAll"
+										ng-init="dim.checkAll=false" ng-click="checkAll(!dim.checkAll)" /></td>
+								<td>流程序号</td>
+								<td>流程描述</td>
+								<td style="width: 300px;">操作</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="flow in options.flows">
+								<td style="text-align: center;"><input type="checkbox" ng-model="flow.checked" /></td>
+								<td>{{flow.flowId}}</td>
+								<td>{{flow.flowDesc}}</td>
+								<td>
+									<div class="d-flex justify-content-around align-items-center">
+										<button class="btn btn-primary" ng-click="editFlow(flow.idRuleFlowInfo || flow.idRuleFlowInfoEffective,flow.idRuleTemplate,flow.flowDesc,false)">查看</button>
+										<button ng-show="dim.runFlag==0" class="btn btn-primary" ng-click="editFlow(flow.idRuleFlowInfo || flow.idRuleFlowInfoEffective,flow.idRuleTemplate,flow.flowDesc,true)">编辑</button>
+										<button ng-show="dim.runFlag==0" class="btn btn-danger" ng-click="delFlow(flow.idRuleFlowInfo)">删除</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div ng-include="'../../docc/common/modal.html'"></div>
+		<div ng-include="'../../docc/common/tips.html'"></div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+    <script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleSetting/flowsetList');
+	</script>
+</html>
