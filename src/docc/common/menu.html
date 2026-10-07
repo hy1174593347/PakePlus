@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	    <title></title>
+	    <link rel="stylesheet" href="../../docc/css/bootstrap.css">
+	    <link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+	</head>
+	<body class="margin-auto" ng-controller="menuController">
+		<div class="app-container fade-in">
+			<form name="menuForm" class="form-horizontal" role="form">
+				<!-- ====== 页头 ====== -->
+				<header class="page-header">
+					<div class="page-header-left">
+						<div class="icon-wrapper">
+							<i class="fas fa-cube"></i>
+						</div>
+						<h1>菜单配置</h1>
+					</div>
+				</header>
+			
+				<section class="section-card">
+					<div class="section-title">
+						<span class="title-icon"><i class="fas fa-info-circle"></i></span>
+						基本信息
+						<span class="title-line"></span>
+					</div>
+			
+					<div class="form-grid">
+						<div class="field-group full-width">
+							<label>
+								<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+								父菜单名称
+							</label>
+							<input ng-model="dim.parentMenuName" required type="text" placeholder="请输入父菜单名称" value="父菜单名称" />
+						</div>
+			
+						<div class="field-group full-width">
+							<label>
+								<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+								子菜单名称
+							</label>
+							<input ng-model="dim.menuName" required type="text" placeholder="请输入子菜单名称" value="子菜单名称" />
+						</div>
+						<div class="field-group full-width">
+							<label>
+								<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+								子菜单路径
+							</label>
+							<input ng-model="dim.menuLink" required type="text" placeholder="请输入子菜单路径" value="子菜单路径" />
+						</div>
+						<div class="field-group full-width">
+							<label>
+								<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+								子菜单备注
+							</label>
+							<input ng-model="dim.remark" required type="text" placeholder="请输入子菜单备注" value="子菜单备注" />
+						</div>
+						<div class="field-group full-width">
+							<label>
+								<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+								父菜单图标路径
+							</label>
+							<input ng-model="dim.menuIconLink" type="text" placeholder="请输入子菜单图标路径" value="子菜单图标路径" />
+						</div>
+
+						<div class="field-group full-width">
+							<label>
+								<i class="fas fa-database" style="color:#3b82f6;font-size:13px;"></i>
+								用户角色
+							</label>
+							<custom-select ng-model="dim.role" options="options.roles" label-key="roleName"
+										   value-key="roleCode" multiple="true"
+										   placeholder="请选择一项">
+							</custom-select>
+						</div>
+					</div>
+				</section>
+			
+				<!-- ====== 底部操作按钮 ====== -->
+				<div class="form-actions">
+					<button type="button" class="btn btn-secondary" ng-click="cleanData()">
+						重置
+					</button>
+					<button class="btn btn-primary" ng-click="saveMenu(menuForm);">
+						新增菜单
+					</button>
+				</div>
+			</form>
+		</div>
+		<div ng-include="'../../docc/common/modal.html'"></div>
+		<div ng-include="'../../docc/common/tips.html'"></div>
+	</body>
+
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/common/menu');
+	</script>
+</html>
