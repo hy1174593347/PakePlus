@@ -1,0 +1,261 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2160" viewBox="0 0 3840 2160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="45%" stop-color="#071a33"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <radialGradient id="glowCyan" cx="44%" cy="48%" r="45%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowGold" cx="16%" cy="58%" r="40%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowGreen" cx="35%" cy="88%" r="35%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="grid" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M120 0H0V120" fill="none" stroke="#1d4ed8" stroke-width="1" opacity="0.10"/>
+    </pattern>
+
+    <pattern id="dotGrid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.5" fill="#38bdf8" opacity="0.14"/>
+    </pattern>
+
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <linearGradient id="lineGrad" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="50%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e7490" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.25"/>
+    </linearGradient>
+
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <linearGradient id="greenBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <linearGradient id="redBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- 背景：整幅 4K 范围都保留原始底色 -->
+  <rect width="3840" height="2160" fill="url(#bg)"/>
+  <rect width="3840" height="2160" fill="url(#grid)"/>
+  <rect width="3840" height="2160" fill="url(#dotGrid)"/>
+  <rect width="3840" height="2160" fill="url(#glowCyan)"/>
+  <rect width="3840" height="2160" fill="url(#glowGold)"/>
+  <rect width="3840" height="2160" fill="url(#glowGreen)"/>
+
+  <!-- 左侧竖向数据流线（只走左半部分） -->
+  <g stroke="#38bdf8" stroke-width="2" opacity="0.14" stroke-dasharray="12 22">
+    <line x1="380" y1="0" x2="380" y2="2160"/>
+    <line x1="980" y1="0" x2="980" y2="2160"/>
+    <line x1="1580" y1="0" x2="1580" y2="2160"/>
+    <line x1="2180" y1="0" x2="2180" y2="2160"/>
+  </g>
+
+  <!-- 左侧底层电路 -->
+  <g fill="none" stroke="#1d4ed8" stroke-width="2" opacity="0.35" filter="url(#softGlow)">
+    <path d="M0 420 H520 V680 H980 V960 H1420"/>
+    <path d="M0 1500 H560 V1260 H1020 V1040 H1440"/>
+    <path d="M1420 960 H1660 V820 H1880"/>
+    <path d="M1440 1040 H1680 V1180 H1900"/>
+  </g>
+
+  <g fill="#38bdf8" filter="url(#softGlow)">
+    <circle cx="520" cy="680" r="8"/>
+    <circle cx="980" cy="960" r="8"/>
+    <circle cx="1420" cy="960" r="8"/>
+    <circle cx="560" cy="1260" r="8"/>
+    <circle cx="1020" cy="1040" r="8"/>
+    <circle cx="1440" cy="1040" r="8"/>
+  </g>
+
+  <!-- 规则流连线（全部收在 x < 2500 以内） -->
+  <g fill="none" stroke="#38bdf8" stroke-width="3" opacity="0.7" marker-end="url(#arrow)">
+    <path d="M1700 1000 C1500 800 1380 680 1250 550"/>
+    <path d="M1700 1000 C1480 920 1330 890 1170 880"/>
+    <path d="M1700 1000 C1420 1060 1300 1130 1150 1200"/>
+    <path d="M1700 1000 C1600 1200 1580 1300 1550 1400"/>
+    <path d="M1700 1000 C1680 1280 1660 1420 1650 1550"/>
+    <path d="M1700 1000 C1920 880 2040 820 2150 550"/>
+    <path d="M1700 1000 C1980 960 2120 900 2250 800"/>
+    <path d="M1700 1000 C2050 1020 2170 1040 2230 1050"/>
+    <path d="M1700 1000 C1900 1180 2030 1280 2150 1350"/>
+    <path d="M1700 1000 C1850 1300 1950 1450 2050 1550"/>
+  </g>
+
+  <!-- 规则节点 -->
+  <g>
+    <!-- 年龄节点 -->
+    <polygon points="1250,450 1340,550 1250,650 1160,550" fill="#0f172a" fill-opacity="0.9" stroke="#fbbf24" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="1250" y="540" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="24" fill="#e0f2fe">年龄</text>
+    <text x="1250" y="575" text-anchor="middle" font-family="Arial" font-size="24" fill="#fbbf24">&gt;30?</text>
+
+    <!-- 职业风险 -->
+    <rect x="1050" y="830" width="240" height="100" rx="16" fill="#0f172a" fill-opacity="0.9" stroke="#38bdf8" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="1170" y="875" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="24" fill="#e0f2fe">职业风险</text>
+    <text x="1170" y="910" text-anchor="middle" font-family="Arial" font-size="20" fill="#7dd3fc">OCCUPATION</text>
+
+    <!-- 历史理赔 -->
+    <circle cx="1150" cy="1200" r="70" fill="#0f172a" fill-opacity="0.9" stroke="#60a5fa" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="1150" y="1195" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="24" fill="#e0f2fe">历史理赔</text>
+    <text x="1150" y="1228" text-anchor="middle" font-family="Arial" font-size="18" fill="#7dd3fc">CLAIM</text>
+
+    <!-- 保额 -->
+    <polygon points="1550,1300 1640,1400 1550,1500 1460,1400" fill="#0f172a" fill-opacity="0.9" stroke="#fbbf24" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="1550" y="1390" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" fill="#e0f2fe">保额</text>
+    <text x="1550" y="1424" text-anchor="middle" font-family="Arial" font-size="20" fill="#fbbf24">&gt;100万?</text>
+
+    <!-- 人工复核 -->
+    <rect x="1530" y="1500" width="240" height="100" rx="16" fill="#0f172a" fill-opacity="0.9" stroke="#fbbf24" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="1650" y="1545" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="24" fill="#e0f2fe">人工复核</text>
+    <text x="1650" y="1580" text-anchor="middle" font-family="Arial" font-size="18" fill="#fbbf24">MANUAL REVIEW</text>
+
+    <!-- 风险评分 -->
+    <circle cx="2150" cy="550" r="70" fill="#0f172a" fill-opacity="0.9" stroke="#60a5fa" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="2150" y="545" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" fill="#e0f2fe">风险评分</text>
+    <text x="2150" y="578" text-anchor="middle" font-family="Arial" font-size="18" fill="#7dd3fc">SCORE</text>
+
+    <!-- 通过 -->
+    <circle cx="2250" cy="800" r="70" fill="#0f172a" fill-opacity="0.9" stroke="#34d399" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="2250" y="795" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="24" fill="#e0f2fe">通过</text>
+    <text x="2250" y="828" text-anchor="middle" font-family="Arial" font-size="18" fill="#34d399">PASS</text>
+
+    <!-- 自动承保 -->
+    <rect x="2230" y="1000" width="260" height="100" rx="16" fill="#0f172a" fill-opacity="0.9" stroke="#34d399" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="2360" y="1045" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" fill="#e0f2fe">自动承保</text>
+    <text x="2360" y="1080" text-anchor="middle" font-family="Arial" font-size="16" fill="#34d399">AUTO UNDERWRITE</text>
+
+    <!-- 欺诈？ -->
+    <polygon points="2150,1250 2240,1350 2150,1450 2060,1350" fill="#0f172a" fill-opacity="0.9" stroke="#fb7185" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="2150" y="1340" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" fill="#e0f2fe">欺诈?</text>
+    <text x="2150" y="1374" text-anchor="middle" font-family="Arial" font-size="18" fill="#fb7185">FRAUD?</text>
+
+    <!-- 拒绝 / 调查 -->
+    <rect x="1900" y="1500" width="300" height="100" rx="16" fill="#0f172a" fill-opacity="0.9" stroke="#fb7185" stroke-width="3" filter="url(#softGlow)"/>
+    <text x="2050" y="1545" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" fill="#e0f2fe">拒绝 / 调查</text>
+    <text x="2050" y="1580" text-anchor="middle" font-family="Arial" font-size="16" fill="#fb7185">REJECT / INVESTIGATE</text>
+  </g>
+
+  <!-- 规则引擎核心 -->
+  <g>
+    <circle cx="1700" cy="1000" r="330" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.18" stroke-dasharray="20 28"/>
+    <circle cx="1700" cy="1000" r="280" fill="none" stroke="#fbbf24" stroke-width="3" opacity="0.28" stroke-dasharray="12 20" filter="url(#glow)"/>
+    <circle cx="1700" cy="1000" r="230" fill="#082f49" fill-opacity="0.65" stroke="#22d3ee" stroke-width="4" filter="url(#glow)"/>
+    <polygon points="1700,770 1900,885 1900,1115 1700,1230 1500,1115 1500,885" fill="none" stroke="#60a5fa" stroke-width="3" opacity="0.65"/>
+
+    <text x="1700" y="965" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="52" fill="#e0f2fe" filter="url(#softGlow)">RULE ENGINE</text>
+    <text x="1700" y="1035" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-weight="700" font-size="44" fill="#fbbf24" filter="url(#softGlow)">规则引擎</text>
+    <text x="1700" y="1095" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#7dd3fc" opacity="0.9">IF → THEN → ACTION</text>
+  </g>
+
+  <!-- 保险盾牌（左侧） -->
+  <g>
+    <path d="M600 880 L880 880 L880 1250 Q880 1520 600 1700 Q320 1520 320 1250 L320 880 Z"
+          fill="url(#shieldGrad)" stroke="url(#goldGrad)" stroke-width="6" filter="url(#glow)"/>
+    <path d="M600 920 L840 920 L840 1245 Q840 1480 600 1620 Q360 1480 360 1245 L360 920 Z"
+          fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+
+    <!-- 伞 -->
+    <path d="M600 1030 Q520 1030 490 1120 Q550 1090 600 1120 Q650 1090 710 1120 Q680 1030 600 1030 Z" fill="#fbbf24" opacity="0.85"/>
+    <line x1="600" y1="1120" x2="600" y2="1210" stroke="#fbbf24" stroke-width="6"/>
+
+    <!-- 家庭 -->
+    <circle cx="555" cy="1265" r="22" fill="#38bdf8"/>
+    <path d="M525 1330 Q555 1290 585 1330 L585 1375 L525 1375 Z" fill="#38bdf8" opacity="0.85"/>
+    <circle cx="645" cy="1265" r="22" fill="#38bdf8"/>
+    <path d="M615 1330 Q645 1290 675 1330 L675 1375 L615 1375 Z" fill="#38bdf8" opacity="0.85"/>
+
+    <!-- 房屋 -->
+    <polygon points="600,1410 655,1370 710,1410 710,1475 600,1475" fill="none" stroke="#34d399" stroke-width="5"/>
+    <rect x="625" y="1435" width="30" height="40" fill="#34d399" opacity="0.8"/>
+
+    <!-- 医疗 -->
+    <rect x="490" y="1410" width="50" height="16" fill="#fb7185" rx="4"/>
+    <rect x="507" y="1393" width="16" height="50" fill="#fb7185" rx="4"/>
+
+    <!-- 车 -->
+    <rect x="720" y="1410" width="80" height="40" rx="10" fill="none" stroke="#60a5fa" stroke-width="4"/>
+    <circle cx="740" cy="1455" r="10" fill="#60a5fa"/>
+    <circle cx="780" cy="1455" r="10" fill="#60a5fa"/>
+  </g>
+
+  <!-- 标题（左上）：已去掉“底层” -->
+  <text x="180" y="180" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="68" fill="#e0f2fe" letter-spacing="8" filter="url(#softGlow)">INSURANCE TECHNOLOGY</text>
+  <text x="180" y="255" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-weight="700" font-size="36" fill="#38bdf8" letter-spacing="10">保险科技 · 规则引擎</text>
+
+  <!-- 左下角保单 -->
+  <g transform="translate(140,1820)">
+    <rect x="0" y="0" width="240" height="280" rx="14" fill="#082f49" fill-opacity="0.5" stroke="#38bdf8" stroke-width="2"/>
+    <text x="120" y="50" text-anchor="middle" font-size="22" fill="#e0f2fe">POLICY</text>
+    <text x="120" y="82" text-anchor="middle" font-size="18" fill="#7dd3fc">保单</text>
+    <line x1="25" y1="110" x2="215" y2="110" stroke="#38bdf8" opacity="0.5"/>
+    <line x1="25" y1="145" x2="215" y2="145" stroke="#38bdf8" opacity="0.5"/>
+    <line x1="25" y1="180" x2="180" y2="180" stroke="#38bdf8" opacity="0.5"/>
+    <circle cx="185" cy="235" r="24" fill="none" stroke="#fbbf24" stroke-width="3"/>
+    <text x="185" y="242" text-anchor="middle" font-size="14" fill="#fbbf24">签</text>
+  </g>
+
+  <!-- 粒子（只分布在左侧 0–2500 区域） -->
+  <g fill="#38bdf8" opacity="0.6">
+    <circle cx="260" cy="360" r="3"/>
+    <circle cx="720" cy="420" r="2.5"/>
+    <circle cx="1180" cy="220" r="3"/>
+    <circle cx="1680" cy="360" r="2.5"/>
+    <circle cx="2280" cy="260" r="3"/>
+    <circle cx="340" cy="1280" r="2.5"/>
+    <circle cx="920" cy="980" r="3"/>
+    <circle cx="1320" cy="1760" r="2.5"/>
+    <circle cx="2040" cy="620" r="3"/>
+    <circle cx="2420" cy="1420" r="2.5"/>
+    <circle cx="520" cy="2020" r="2.5"/>
+    <circle cx="1360" cy="1940" r="3"/>
+    <circle cx="2240" cy="1980" r="2.5"/>
+  </g>
+
+  <!-- 顶部与底部光条（右侧也延伸，但很细，不影响登录框） -->
+  <rect x="0" y="0" width="3840" height="2" fill="#38bdf8" opacity="0.3"/>
+  <rect x="0" y="2140" width="2600" height="4" fill="url(#lineGrad)" opacity="0.5" filter="url(#glow)"/>
+
+  <!-- 底部小字 -->
+  <text x="1300" y="2070" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" fill="#94a3b8" opacity="0.5" letter-spacing="10">智能核保 · 自动理赔 · 风险定价 · 规则驱动</text>
+</svg>
