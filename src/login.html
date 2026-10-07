@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta http-equiv="Cache-Control" content="no-cache" />
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>规则引擎 · 登录</title>
+        <link rel="stylesheet" href="./css/lib/bootstrap.min.css" />
+        <link rel="stylesheet" href="./docc/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="./docc/css/base.css">
+        <link rel="stylesheet" href="./docc/css/bom.css">
+        <link rel="stylesheet" href="./docc/css/login.css">
+    </head>
+    <body ng-controller="loginController">
+        <div class="login-bg">
+            <div class="login-box">
+                <h1>欢迎登录</h1>
+
+                <form name="loginForm" class="form-horizontal" role="form">
+                    <div class="form-item">
+                        <label for="userNo">账号</label>
+                        <input id="userNo" ng-model="dim.userNo" type="text" placeholder="请输入账号 / 手机号" required autocomplete="userNo"/>
+                    </div>
+
+                    <div class="form-item">
+                        <label for="loginPassword">密码</label>
+                        <input id="loginPassword" ng-model="dim.loginPassword" type="password" placeholder="请输入密码" required autocomplete="loginPassword"/>
+                    </div>
+
+                    <div class="form-extra">
+                        <label>
+                            <input type="checkbox" ng-model="dim.isCache" /> 记住我
+                        </label>
+                        <a href="#">忘记密码？</a>
+                    </div>
+
+                    <button class="btn-login" type="submit" ng-click="login(loginForm)">登 录</button>
+                </form>
+            </div>
+        </div>
+
+        <div ng-include="'./docc/common/modal.html'"></div>
+        <div ng-include="'./docc/common/tips.html'"></div>
+    </body>
+
+    <script src="./js/lib/bootstrap.bundle.js"></script>
+    <script src="./js/lib/underscore.js"></script>
+    <script src="./js/lib/angular1.8.3.min/angular.min.js"></script>
+    <script src="./js/lib/crypto-js.js"></script>
+    <script src="./js/sea.js"></script>
+    <script>
+        seajs.use('./js/login');
+    </script>
+</html>
