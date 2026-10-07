@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	    <title></title>
+	    <link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+	    <link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+		<link rel="stylesheet" href="../../docc/css/customTreeSelect.css">
+	</head>
+	<body class="margin-auto" ng-controller="flowController">
+        <div class="container py-4 app-container" style="max-width: 99%;min-height: 700px;">
+			<form name="addFlowSetForm" role="form">
+				<div class="d-flex justify-content-around align-items-center">
+					<label>
+						<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+						维度信息：
+					</label>
+					<div class="d-flex justify-content-start align-items-center" ng-repeat="demon in dim.dimSettingDTOList">
+						<div>{{demon.dimName}}：{{demon.dimValue}}</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="d-flex justify-content-between align-items-center field-group">
+						<span style="width: 100px;">模板：</span>
+						<custom-select required ng-model="dim.idRuleTemplate" options="options.templates" label-key="templateName" style="width: 300px;"
+									   value-key="idRuleTemplate" ng-change="changeType(dim.idRuleTemplate)" searchable="true"
+									   disabled="ctrl.isDisabled"
+									   multiple="false" placeholder="请选择模板">
+						</custom-select>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center" style="gap:10px;">
+						<button type="button" class="btn btn-secondary" ng-click="back()">返回</button>
+						<button ng-if="dim.isEdit" class="btn btn-primary" ng-click="saveFlow(addFlowSetForm)">保存</button>
+					</div>
+				</div>
+			</form>
+			<div class="d-flex justify-content-between align-items-center" style="margin-top: 10px;">
+				流程描述：
+				<textarea ng-model="dim.flowDesc" placeholder="请输入流程描述" style="width: 90%;"></textarea>
+			</div>
+			<div class="section-card" style="margin-top: 10px;">
+				<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+					<table class="table table-bordered table-hover">
+						<thead style="background-color: lavender;">
+						<tr>
+							<td style="width:100px;"><input type="checkbox" ng-model="dim.checkAll"
+															ng-init="dim.checkAll=false" ng-click="checkAll(!dim.checkAll)" /></td>
+							<td>规则ID</td>
+							<td>规则名称</td>
+							<td>规则描述</td>
+							<td>规则结果</td>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="rule in options.rules track by rule.ruleId">
+							<td><input type="checkbox" ng-model="rule.checked" ng-init="rule.checked = rule.isRequired == '1'" ng-disabled="rule.isRequired == '1'"/></td>
+							<td>{{rule.ruleId}}</td>
+							<td>{{rule.ruleName}}</td>
+							<td>
+								<div ng-repeat="demon in rule.rowTokens track by demon.id">
+									<div ng-if="$index > 0" style="margin: 5px 0; display: flex; justify-content: center; align-items: center;">
+										<span style="flex: 1; height: 1px; background: #e9edf2;"></span>
+										<span style="width: 50px;text-align: center;">{{demon.rel}}</span>
+										<span style="flex: 1; height: 1px; background: #e9edf2;"></span>
+									</div>
+									<div class="d-flex justify-content-around align-items-center" style="gap: 10px;">
+										<span style="grid-column: 1 / 3;width: 100%;text-align: center;">{{demon.param1}}</span>
+										<span style="grid-column: 2 / 3;width: 100%;text-align: center;">{{demon.metaRuleName}}</span>
+										<span style="grid-column: 3 / 3;width: 100%;text-align: center;">
+											<custom-tree-select
+													ng-model="demon.param2"
+													path-model="demon.param2Path"
+													tree-data="bomTree"
+													label-key="pathName"
+													value-key="path"
+													placeholder="请选择或输入规则参数">
+											</custom-tree-select>
+										</span>
+									</div>
+								</div>
+							</td>
+							<td>{{rule.resultName}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div ng-include="'../../docc/common/modal.html'"></div>
+		<div ng-include="'../../docc/common/tips.html'"></div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+    <script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleSetting/flowEdit');
+	</script>
+</html>
