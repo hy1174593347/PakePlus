@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+		<link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+	</head>
+
+	<body class="margin-auto" ng-controller="templateEditController">
+		<div class="app-container">
+			<div class="section-card">
+				<div class="form-grid">
+					<form name="templateForm" style="display: contents;" class="form-horizontal" role="form">
+						<div style="grid-column: 1 / 2;">
+							<label>
+								<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+								应用
+							</label>
+							<custom-select required ng-model="dim.idRuleApplication" options="options.apps" label-key="applicationName"
+										   value-key="idRuleApplication" ng-change="changeApp(dim.idRuleApplication)" searchable="true"
+										   disabled="ctrl.isDisabled"
+										   multiple="false" placeholder="请选择应用">
+							</custom-select>
+						</div>
+
+						<div class="field-group" style="grid-column: 2 / 3;">
+							<label>
+								<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+								模板名称
+							</label>
+							<input type="text" ng-model="dim.templateName" required placeholder="请输入模板名称">
+						</div>
+						<div class="field-group"
+							 style="grid-column: 3 / 3; display: flex; align-items: flex-end; justify-content: flex-end; gap: 10px; white-space: nowrap; flex-wrap: nowrap; flex-shrink: 0;flex-direction: row;">
+							<button type="button" class="btn btn-secondary btn-glossy" ng-click="toBack()">返回</button>
+							<button class="btn btn-primary btn-glossy" ng-click="saveTemplate(templateForm)">保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="section-card">
+				<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+					<table class="table table-bordered table-hover">
+						<thead style="background-color: lavender;">
+						<tr>
+							<td style="width:100px;"><input type="checkbox" ng-model="dim.checkAll"
+																			   ng-init="dim.checkAll=false" ng-click="checkAll(!dim.checkAll)" /></td>
+							<td>是否必选</td>
+							<td>规则分类</td>
+							<td>规则ID</td>
+							<td>规则名称</td>
+							<td>规则描述</td>
+							<td>规则结果</td>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="rule in options.rules track by rule.ruleId">
+							<td><input type="checkbox" ng-model="rule.checked" /></td>
+							<td><input type="checkbox" ng-model="rule.isRequired" ng-true-value="'1'" ng-false-value="'0'" /></td>
+							<td>{{rule.catalogue}}</td>
+							<td>{{rule.ruleId}}</td>
+							<td>{{rule.ruleName}}</td>
+							<td>
+								<div ng-repeat="demon in rule.rowTokens track by demon.id">
+									<div ng-if="$index > 0" style="margin: 5px 0; display: flex; justify-content: center; align-items: center;">
+										<span style="flex: 1; height: 1px; background: #e9edf2;"></span>
+										<span style="width: 50px;text-align: center;">{{demon.rel}}</span>
+										<span style="flex: 1; height: 1px; background: #e9edf2;"></span>
+									</div>
+									<div class="d-flex justify-content-around align-items-center" style="gap: 10px;">
+										<span style="grid-column: 1 / 3;width: 100%;text-align: center;">{{demon.param1}}</span>
+										<span style="grid-column: 2 / 3;width: 100%;text-align: center;">{{demon.metaRuleName}}</span>
+										<span style="grid-column: 3 / 3;width: 100%;text-align: center;">{{demon.param2 || '规则参数'}}</span>
+									</div>
+								</div>
+							</td>
+							<td>{{rule.resultName}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div ng-include="'../../docc/common/modal.html'"></div>
+			<div ng-include="'../../docc/common/tips.html'"></div>
+		</div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleManage/templateEdit');
+	</script>
+
+</html>
