@@ -1,0 +1,16 @@
+<div ng-show="ctrl.showsuccessMessage" class="alert alert-success alert-dismissable tips">
+	<button type="button" class="btn-close" ng-click="ctrl.showsuccessMessage = fasle"></button>
+	<span ng-bind="successMessage"></span>
+</div>
+<div ng-show="ctrl.showinfoMessage" class="alert alert-info alert-dismissable tips">
+	<button type="button" class="btn-close" ng-click="ctrl.showinfoMessage = fasle"></button>
+	<span ng-bind="infoMessage"></span>
+</div>
+<div ng-show="ctrl.showwarningMessage" class="alert alert-warning alert-dismissable tips">
+	<button type="button" class="btn-close" ng-click="ctrl.showwarningMessage = fasle"></button>
+	<span ng-bind="warningMessage"></span>
+</div>
+<div ng-show="ctrl.showdangerMessage" class="alert alert-danger alert-dismissable tips">
+	<button type="button" class="btn-close" ng-click="ctrl.showdangerMessage = fasle"></button>
+	<span ng-bind="dangerMessage"></span>
+</div>
