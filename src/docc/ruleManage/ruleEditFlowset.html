@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+		<link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+		<link rel="stylesheet" href="../../docc/css/customTreeSelect.css">
+	</head>
+
+	<body class="margin-auto" ng-controller="ruleEditFlowsetController">
+		<div class="app-container">
+			<div class="section-card">
+				<div class="editor-title d-flex justify-content-between align-items-center">
+					<form name="ruleForm" style="display: contents;" class="form-horizontal" role="form">
+						<div class="field-group" style="display: flex;">
+							<input ng-model="addDim.ruleId" name="ruleId" required type="text" placeholder="请输入规则编码" value="规则编码" />
+						</div>
+						<div class="field-group" style="display: flex;">
+							<input ng-model="addDim.ruleName" name="ruleName" required type="text" placeholder="请输入规则名称" value="规则名称" />
+						</div>
+						<div style="display: flex;">
+							<custom-select required ng-model="addDim.resultCode" options="::resultDefines" label-key="resultName" style="width: 300px;"
+										   value-key="resultCode" ng-change="changeResult(addDim.resultCode)" searchable="false"
+										   multiple="false" placeholder="请选择规则执行结果">
+							</custom-select>
+						</div>
+						<div style="display: flex; gap: 8px; flex-shrink: 0;">
+							<button type="button" class="btn btn-primary" ng-click="toBack()">
+								返回
+							</button>
+							<button class="btn btn-primary" ng-click="saveRule(ruleForm)">
+								保存
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="section-card">
+				<div class="d-flex justify-content-around align-items-center" style="gap: 10px;">
+					<span style="grid-column: 1 / 5;width: 100%;text-align: center;">业务属性</span>
+					<span style="grid-column: 2 / 5;width: 100%;text-align: center;">逻辑判断</span>
+					<span style="grid-column: 3 / 5;width: 100%;text-align: center;">规则参数</span>
+					<span style="grid-column: 5 / 5;width: 100px;min-width: 100px;">&nbsp;</span>
+				</div>
+				<div ng-repeat="demon in rowTokens track by demon.id">
+					<div ng-if="$index > 0" style="margin: 5px 0;" class="d-flex justify-content-center">
+						<span style="border-bottom: 1px solid #e9edf2;height: 50%;width: 50%;">&nbsp;</span>
+						<custom-select required ng-model="demon.rel" options="relList" label-key="key" style="width: 200px;"
+									   value-key="key" ng-change="changeBom(demon.rel)" searchable="false"
+									   multiple="false" placeholder="">
+						</custom-select>
+						<span style="border-bottom: 1px solid #e9edf2;height: 50%;width: 50%;">&nbsp;</span>
+					</div>
+					<div class="d-flex justify-content-around align-items-center" style="gap: 10px;" >
+						<custom-tree-select
+								ng-model="demon.param1"
+								path-model="demon.param1Path"
+								tree-data="bomTree"
+								label-key="pathName"
+								value-key="path"
+								placeholder="请选择业务属性">
+						</custom-tree-select>
+						<custom-select required ng-model="demon.metaRuleId" options="::operators" label-key="metaRuleName"
+									   value-key="metaRuleId" ng-change="changeMetaRule(demon.metaRuleId)" searchable="true"
+									   multiple="false" placeholder="请选择逻辑判断">
+						</custom-select>
+						<custom-tree-select
+								ng-model="demon.param2"
+								path-model="demon.param2Path"
+								tree-data="bomTree"
+								label-key="pathName"
+								value-key="path"
+								placeholder="请选择或输入规则参数">
+						</custom-tree-select>
+						<div class="d-flex justify-content-start align-items-center" style="gap: 10px;min-width: 100px;">
+							<button class="btn btn-primary" style="min-width: 40px;" ng-click="addCondition($index)">
+								+
+							</button>
+							<button ng-if="$index > 0" class="btn btn-primary" style="min-width: 40px;" ng-click="delCondition($index)">
+								-
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div ng-include="'../../docc/common/modal.html'"></div>
+			<div ng-include="'../../docc/common/tips.html'"></div>
+		</div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleManage/ruleEditFlowset');
+	</script>
+
+</html>
