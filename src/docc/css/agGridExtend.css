@@ -1,0 +1,225 @@
+.grid-wrapper {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+}
+
+/* Pinned 行整体视觉：像表头一样 */
+.ag-floating-top {
+    background: #f0f4f9 !important;
+    border-bottom: 2px solid #d0d7de !important;
+}
+
+.ag-floating-top .ag-cell {
+    background: #f0f4f9;
+    font-weight: 600;
+    color: #1f2328;
+    overflow: visible !important;
+    /* 让单元格内的面板能溢出 */
+}
+
+/* ============ 树形搜索下拉（Pinned 第 1 行） ============ */
+.tree-search-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    padding: 0 8px;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    cursor: text;
+}
+
+.tree-search-input::placeholder {
+    color: #8c959f;
+}
+
+.tree-search-panel {
+    position: fixed;
+    background: #fff;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 99999;
+    padding: 4px 0;
+    font-size: 14px;
+    font-weight: normal;
+    color: #1f2328;
+}
+
+.tree-search-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tree-search-panel::-webkit-scrollbar-thumb {
+    background: #d0d7de;
+    border-radius: 3px;
+}
+
+.tree-search-item {
+    padding: 6px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tree-search-item:hover {
+    background: #f0f4f9;
+}
+
+.tree-search-item.selected {
+    background: #ddf4ff;
+    color: #0969da;
+}
+
+.tree-search-empty {
+    padding: 8px 12px;
+    color: #8c959f;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ============ 普通下拉（Pinned 第 2 行） ============ */
+.simple-select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    padding: 0 8px;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* ============ 数据行编辑器：可下拉可输入 ============ */
+.combo-editor-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.combo-editor-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    padding: 0 8px;
+    font-family: inherit;
+    color: inherit;
+}
+
+.combo-editor-panel {
+    position: fixed;
+    background: #fff;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 99999;
+    padding: 4px 0;
+    font-size: 14px;
+}
+
+.combo-editor-item {
+    padding: 6px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.combo-editor-item:hover {
+    background: #f0f4f9;
+}
+
+.combo-editor-empty {
+    padding: 8px 12px;
+    color: #8c959f;
+    font-size: 13px;
+    text-align: center;
+}
+
+.debug-panel {
+    background: #f6f8fa;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 13px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 16px;
+}
+
+.tree-search-input.is-disabled,
+.simple-select.is-disabled {
+    background: #f6f8fa;
+    color: #8c959f;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* 禁用态下不显示 hover 效果 */
+.tree-search-input.is-disabled:hover,
+.simple-select.is-disabled:hover {
+    background: #f6f8fa;
+}
+
+/* ===== ag-Grid 右键菜单 ===== */
+.ag-context-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 160px;
+    padding: 4px 0;
+    background: #fff;
+    border: 1px solid #dce1e9;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    font-size: 14px;
+    color: #1e293b;
+    user-select: none;
+}
+
+.ag-context-menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.1s;
+}
+
+.ag-context-menu-item:hover {
+    background: #f0f4f9;
+}
+
+.ag-context-menu-item.danger {
+    color: #ef4444;
+}
+
+.ag-context-menu-item.danger:hover {
+    background: #fee2e2;
+}
+
+.ag-context-menu-item.disabled {
+    color: #b0bac9;
+    cursor: not-allowed;
+}
+
+.ag-context-menu-item.disabled:hover {
+    background: transparent;
+}
+
+.ag-context-menu-sep {
+    height: 1px;
+    background: #e9edf2;
+    margin: 4px 0;
+}
