@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/bootstrap-icons.min.css">
+		<link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+		<link rel="stylesheet" href="../../docc/css/ruleEdit.css">
+		<link rel="stylesheet" href="../../docc/css/agGrid.css">
+		<link rel="stylesheet" href="../../docc/css/agTheme.css">
+		<link rel="stylesheet" href="../../docc/css/agGridExtend.css">
+	</head>
+
+	<body class="margin-auto" ng-controller="catalogueController">
+		<div class="app-container" style="max-width: 400px;margin-right: 20px;min-height: 700px;height: 100%;">
+			<custom-select required ng-model="dim.ruleRepositoryId" options="options.apps" label-key="applicationName"
+				value-key="ruleRepositoryId" ng-change="changeApp(dim.ruleRepositoryId)" searchable="true"
+				multiple="false" placeholder="请选择应用">
+			</custom-select>
+			<div class="d-flex justify-content-start" style="margin: 10px 0;gap: 8px;">
+				<button type="button" class="btn-add-row" ng-click="addCatalogue('show','appCatalogueModal')">
+					<i class="fas fa-plus"></i>
+					新增目录
+				</button>
+				<button type="button" class="btn-add-row" ng-click="delCatalogue()">
+					<i class="fas fa-plus"></i>
+					删除目录
+				</button>
+				<button type="button" class="btn-add-row" ng-click="delRules()">
+					<i class="fas fa-plus"></i>
+					删除规则
+				</button>
+			</div>
+			<div class="d-flex justify-content-between field-group" style="flex-direction: row;margin-bottom: 10px;">
+				<input type="text" ng-model="dim.filterName" placeholder="请输入目录或规则名称名称">
+				<button style="width: 80px;" type="button" class="btn-add-row" ng-click="filterRepository(dim.filterName)">
+					<i class="fas fa-plus"></i>
+					查找
+				</button>
+			</div>
+			<div style="max-height: 85%;min-height: 450px; border: 1px solid #dce1e9;">
+				<tree-view
+					ng-model="dim.selectedCatalogue"
+					tree-data="treeData"
+					label-key="label"
+					check-box="true"
+					ng-select="changeSelected(dim.selectedCatalogue)">
+				</tree-view>
+			</div>
+		</div>
+		<div class="app-container" style="min-height: 700px;">
+			<div class="d-flex justify-content-start" style="margin-bottom: 10px;gap: 8px;">
+				<button class="btn btn-primary" ng-click="addRule()">
+					新增规则
+				</button>
+				<button class="btn btn-primary" ng-click="addTable()">
+					新增决策表
+				</button>
+				<button ng-if="ctrl.currentRuleId" class="btn btn-primary" ng-click="editRule()">
+					修改规则
+				</button>
+				<button ng-if="ctrl.currentTableId" class="btn btn-primary" ng-click="editTable()">
+					修改决策表
+				</button>
+			</div>
+			<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+				<span ng-if="preTokens && preTokens.length > 0">⚡预定义</span>
+				<div ng-if="preTokens && preTokens.length > 0" rule-editor tokens="preTokens" bom-tree="bomTree" operators="operators"
+					base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="false"
+					get-property-by-class="getPropertyByClass(property)">
+				</div>
+
+				<span ng-if="editorTokens && editorTokens.length > 0">⚡如果</span>
+				<div ng-if="editorTokens && editorTokens.length > 0" rule-editor tokens="editorTokens" bom-tree="bomTree" operators="operators"
+					base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="false"
+					get-property-by-class="getPropertyByClass(property)">
+				</div>
+
+				<span ng-if="thenTokens && thenTokens.length > 0">⚡那么</span>
+				<div ng-if="thenTokens && thenTokens.length > 0" rule-editor tokens="thenTokens" bom-tree="bomTree" operators="operators"
+					base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="false"
+					get-property-by-class="getPropertyByClass(property)">
+				</div>
+
+				<span ng-if="elseTokens && elseTokens.length > 0">⚡否则</span>
+				<div ng-if="elseTokens && elseTokens.length > 0" rule-editor tokens="elseTokens" bom-tree="bomTree" operators="operators"
+					base-datas="baseDatas" query-base-data="queryBaseData(baseType)" edit="false"
+					get-property-by-class="getPropertyByClass(property)">
+				</div>
+
+				<div ng-show="tableData && tableData.detailList && tableData.detailList.length > 0" class="grid-wrapper">
+					<div ag-grid="gridOptions" class="ag-theme-balham" style="height: 400px; width: 100%;">
+					</div>
+				</div>
+			</div>
+
+			<!-- 公共组件 -->
+			<div ng-include="'../../docc/common/modal.html'"></div>
+			<div ng-include="'../../docc/common/tips.html'"></div>
+			
+		</div>
+
+		<div class="modal" id="appCatalogueModal" tabindex="-1" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content" style="width: 600px;">
+					<div class="modal-header">
+					</div>
+					<div class="modal-body">
+						<div style="padding:5px;" class="panel panel-default">
+							<form name="catalogueForm" class="form-horizontal" role="form">
+								<div class="field-group" style="margin-bottom: 10px;">
+									<input type="text" ng-model="addDim.catalogue" required placeholder="请输入目录名字">
+								</div>
+								<button class="btn btn-primary" ng-click="saveCatalogue(catalogueForm)">
+									确定
+								</button>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/lib/agGrid.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/ruleManage/catalogue');
+	</script>
+
+</html>
