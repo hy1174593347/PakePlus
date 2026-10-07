@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../docc/css/bootstrap.css">
+		<link rel="stylesheet" href="../../docc/css/base.css">
+		<link rel="stylesheet" href="../../docc/css/bom.css">
+		<link rel="stylesheet" href="../../docc/css/app.css">
+		<link rel="stylesheet" href="../../docc/css/select.css">
+	</head>
+
+	<body class="margin-auto" ng-controller="userController">
+		<div class="app-container">
+			<div class="section-card">
+				<form name="queryForm" class="form-horizontal" role="form">
+					<div class="form-grid">
+						<div class="field-group" style="grid-column: 1 / 1;">
+							<label>
+								<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+								用户账号
+							</label>
+							<input ng-model="dim.userNo" type="text" placeholder="请输入用户账号" value="" />
+						</div>
+						<div class="field-group" style="grid-column: 2 / 2;">
+							<label>
+								<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+								用户姓名
+							</label>
+							<input ng-model="dim.userName" type="text" placeholder="请输入用户姓名" value="" />
+						</div>
+						<div class="field-group"
+							 style="grid-column: 3 / 4; display: flex; align-items: flex-end; justify-content: flex-end; gap: 10px; white-space: nowrap; flex-wrap: nowrap; flex-shrink: 0;flex-direction: row;">
+							<button class="btn btn-primary btn-glossy" ng-click="queryUser()">查询</button>
+						</div>
+						<div class="field-group"
+							 style="grid-column: 4 / 4; display: flex; align-items: flex-end; justify-content: flex-end; gap: 10px; white-space: nowrap; flex-wrap: nowrap; flex-shrink: 0;flex-direction: row;">
+							<button class="btn btn-primary btn-glossy" ng-click="showUpdate('show','userUpdateModal',null)">新增</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="section-card">
+				<div class="table-responsive panel panel-default" style="border: none; box-shadow: none;">
+					<table class="table table-bordered table-hover">
+						<thead style="background-color: lavender;">
+							<tr>
+								<td>用户账号</td>
+								<td>用户姓名</td>
+								<td style="width: 35%">用户角色</td>
+								<td style="width: 35%">授权应用</td>
+								<td>操作</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="user in options.userList">
+								<td>{{user.userNo}}</td>
+								<td>{{user.username}}</td>
+								<td>
+									<span ng-if="user.roles && user.roles.length > 0" class="btn-add-row" style="margin-right: 4px;margin-bottom: 4px;" ng-repeat="role in user.roles">
+										{{::role.roleName}}
+									</span>
+								</td>
+								<td>
+									<span ng-if="user.apps && user.apps.length > 0" class="btn-add-row" style="margin-right: 4px;margin-bottom: 4px;" ng-repeat="app in user.apps track by app.idRuleApplication">
+										{{::app.applicationName}}
+									</span>
+								</td>
+								<td>
+									<div class="d-flex justify-content-around">
+										<button type="button" class="btn-remove-row" ng-click="showUpdate('show','userUpdateModal',user)">
+											<i class="fas fa-times"></i>
+											修改
+										</button>
+										<button type="button" class="btn-remove-row" ng-click="delUser(user)">
+											<i class="fas fa-times"></i>
+											删除
+										</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal" id="userUpdateModal" tabindex="-1" style="display: none;">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width: 600px;">
+						<div class="modal-header">
+						</div>
+						<div class="modal-body">
+							<div style="padding:5px;" class="panel panel-default">
+								<form name="userForm" class="form-horizontal" role="form">
+									<!-- ====== 卡片1：基本信息 ====== -->
+									<section class="section-card">
+										<div class="section-title">
+											<span class="title-icon"><i class="fas fa-brain"></i></span>
+											基本信息
+											<span class="title-line"></span>
+										</div>
+								
+										<div class="form-grid">
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													用户账号
+												</label>
+												<input ng-model="addDim.userNo" required type="text" placeholder="请输入用户账号" value="" />
+											</div>
+								
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													用户姓名
+												</label>
+												<input ng-model="addDim.username" required type="text" placeholder="请输入用户姓名" value="" />
+											</div>
+
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													登录密码
+												</label>
+												<input ng-model="addDim.loginPassword" required type="password" placeholder="请输入登录密码" value="" />
+											</div>
+
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													用户邮箱
+												</label>
+												<input ng-model="addDim.email" type="text" placeholder="请输入用户邮箱" value="" />
+											</div>
+
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-file-alt" style="color:#3b82f6;font-size:13px;"></i>
+													身份证号码
+												</label>
+												<input ng-model="addDim.identityNo" type="text" placeholder="请输入身份证号码" value="" />
+											</div>
+								
+											<div class="field-group full-width">
+												<label>
+													<i class="far fa-sticky-note" style="color:#3b82f6;font-size:13px;"></i>
+													手机号
+												</label>
+												<input ng-model="addDim.phone" type="text" placeholder="请输入手机号" value="" />
+											</div>
+										</div>
+									</section>
+
+									<section class="section-card">
+										<div class="section-title">
+											<span class="title-icon"><i class="fas fa-brain"></i></span>
+											授权信息
+											<span class="title-line"></span>
+										</div>
+
+										<div class="decision-grid">
+											<div class="field-group">
+												<label>
+													<i class="fas fa-database" style="color:#3b82f6;font-size:13px;"></i>
+													用户角色
+												</label>
+												<custom-select ng-model="addDim.role" options="options.roles" label-key="roleName"
+															   value-key="roleCode" multiple="true"
+															   placeholder="请选择一项">
+												</custom-select>
+											</div>
+										</div>
+
+										<div class="decision-grid">
+											<div class="field-group">
+												<label>
+													<i class="fas fa-database" style="color:#3b82f6;font-size:13px;"></i>
+													授权应用
+												</label>
+												<custom-select ng-model="addDim.app" options="options.apps" label-key="applicationName"
+															   value-key="idRuleApplication" searchable="true" multiple="true"
+															   placeholder="请选择一项">
+												</custom-select>
+											</div>
+										</div>
+									</section>
+								
+									<!-- ====== 底部操作按钮 ====== -->
+									<div class="form-actions">
+										<button class="btn btn-primary btn-glossy" ng-click="saveUser(userForm)">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<!-- 公共组件 -->
+			<div ng-include="'../../docc/common/modal.html'"></div>
+			<div ng-include="'../../docc/common/tips.html'"></div>
+			
+		</div>
+	</body>
+	<script src="../../js/lib/bootstrap.bundle.js"></script>
+	<script src="../../js/lib/underscore.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular.min.js"></script>
+	<script src="../../js/lib/angular1.8.3.min/angular-sanitize.min.js"></script>
+	<script src="../../js/lib/crypto-js.js"></script>
+	<script src="../../js/sea.js"></script>
+	<script>
+		seajs.use('../../js/system/userList');
+	</script>
+
+</html>
