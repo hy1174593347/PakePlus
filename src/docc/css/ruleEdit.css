@@ -1,0 +1,402 @@
+/* 基础重置 & 编辑器样式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background: #f4f6f9;
+}
+
+.editor-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 900px;
+  margin: 10px auto;
+}
+
+.editor-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* 核心编辑器：contentEditable */
+.rule-editor {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px 16px;
+  min-height: 120px;
+  outline: none;
+  background: #fff;
+  font-size: 16px;
+  line-height: 2.2;
+  /* 让子元素 inline 排列 */
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.rule-editor.empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+  pointer-events: none;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 各种 Token 样式 */
+.token-keyword {
+  color: #d73a49;
+  /* 红色关键字 */
+  font-weight: 600;
+}
+
+.token-text {
+  color: #24292e;
+  /* 默认黑色 */
+}
+
+.token-placeholder {
+  color: #8b4513;
+  /* 棕色 */
+  background: #f7e8d0;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px dashed #8b4513;
+}
+
+.token-placeholder:hover {
+  background: #e3d0b0;
+}
+
+.token-error {
+  text-decoration: underline wavy red;
+  /* 红色波浪线 */
+}
+
+/* 提示框 (Suggestion Box) */
+.suggestion-box {
+  position: absolute;
+  background: white;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-height: 240px;
+  overflow-y: auto;
+  min-width: 200px;
+  z-index: 1000;
+  display: none;
+  /* 默认隐藏 */
+  padding: 6px 0;
+  max-width: 300px;
+  /* 限制最大宽度 */
+  width: auto;
+  /* 根据内容自适应，但不超过 max-width */
+  min-width: 180px;
+  /* 避免太窄，可选 */
+  overflow-y: auto;
+  /* 垂直滚动 */
+  overflow-x: hidden;
+  /* 隐藏水平滚动条（关键） */
+}
+
+.suggestion-box.active {
+  display: block;
+}
+
+/* 隐藏滚动条（可选，让视觉更干净，但保留滚动功能） */
+.suggestion-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.suggestion-box::-webkit-scrollbar-thumb {
+  background: #d0d7de;
+  border-radius: 4px;
+}
+
+.suggestion-box::-webkit-scrollbar-thumb:hover {
+  background: #b0b8c0;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1f2328;
+  transition: background 0.1s ease;
+  box-sizing: border-box;
+}
+
+.suggestion-item:hover {
+  background: #f0f4f9;
+}
+
+/* 图标占位（固定宽度，不压缩） */
+.suggestion-item .item-icon {
+  flex-shrink: 0;
+  /* 图标不缩小 */
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.suggestion-item .item-type {
+  font-size: 11px;
+  color: #57606a;
+  background: #eaeef2;
+  padding: 0 8px;
+  border-radius: 12px;
+}
+
+.suggestion-item .item-text {
+  flex: 1;
+  /* 占据剩余空间 */
+  white-space: nowrap;
+  /* 强制单行 */
+  overflow: hidden;
+  /* 隐藏溢出 */
+  text-overflow: ellipsis;
+  /* 显示省略号 */
+  min-width: 0;
+  /* 防止 flex 子项溢出（关键！） */
+}
+
+/* 底部数据展示 */
+.debug-area {
+  margin-top: 20px;
+  border-top: 1px solid #e1e4e8;
+  padding-top: 15px;
+}
+
+.debug-area h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #57606a;
+}
+
+.debug-json {
+  background: #f6f8fa;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.status-bar {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #57606a;
+}
+
+/* ===== 1. 整体布局容器 ===== */
+.editor-layout {
+  display: flex;
+  flex-direction: row;
+  /* 水平排列 */
+  align-items: stretch;
+  /* 让左右两侧高度自动撑满 */
+  height: 85vh;
+  /* 视窗高度，根据你的页面调整，建议不低于600px */
+  max-height: 800px;
+  /* 限制最大高度防止溢出屏幕 */
+  background: #f4f6f9;
+  border-radius: 12px;
+  overflow: hidden;
+  /* 让内部滚动，整体不溢出圆角 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== 2. 左侧编辑器区域 (flex: 1 表示占据剩余所有空间) ===== */
+.editor-wrapper {
+  flex: 1;
+  /* 自动填满剩余宽度 */
+  background: #ffffff;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* 内容过多时左侧独立滚动 */
+  min-width: 300px;
+  /* 保证在小屏幕上不至于太窄 */
+}
+
+.editor-title {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #1f2328;
+  flex-shrink: 0;
+  /* 标题不压缩 */
+}
+
+/* 编辑器容器（让提示框绝对定位参照） */
+.editor-wrapper>div[style*="position: relative"] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 使 directive 容器填满剩余高度 */
+.editor-wrapper [rule-editor] {
+  flex: 1;
+  min-height: 120px;
+}
+
+/* 编辑器输入框内边距微调 */
+.rule-editor {
+  height: 100%;
+  min-height: 100px;
+}
+
+/* ===== 3. 中间切换按钮 (固定宽度 42px) ===== */
+.layout-toggle-btn {
+  flex: 0 0 42px;
+  /* 固定宽度，不伸缩 */
+  align-self: stretch;
+  /* 高度与父容器一致 */
+  background: #f0f4f9;
+  border: none;
+  border-left: 1px solid #d0d7de;
+  border-right: 1px solid #d0d7de;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #57606a;
+  transition: background 0.15s ease, color 0.15s ease;
+  z-index: 5;
+  padding: 0;
+}
+
+.layout-toggle-btn:hover {
+  background: #e1e6ed;
+  color: #1f2328;
+}
+
+.layout-toggle-btn:active {
+  background: #d0d7de;
+}
+
+/* 按钮图标旋转（bootstrap-icons 自带旋转，这里做状态切换演示） */
+/* 如果你的项目中使用了 ng-class 切换 bi-chevron-left/right，无需额外旋转 */
+/* 若使用箭头，你已经在 ng-class 里写了 bi-chevron-left/right，很完美 */
+
+/* ===== 4. 右侧调试区域 (固定宽度 380px) ===== */
+.debug-area {
+  flex: 0 0 45%;
+  /* 固定宽度，不伸缩 */
+  background: #f6f8fa;
+  padding: 24px 20px;
+  overflow-y: auto;
+  /* 内容过多时独立滚动 */
+  border-left: 1px solid #e1e4e8;
+  display: flex;
+  flex-direction: column;
+}
+
+.debug-area h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2328;
+  flex-shrink: 0;
+}
+
+.debug-json {
+  flex: 1;
+  /* 让 JSON 区域自动填满剩余高度 */
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 240px;
+  color: #24292e;
+}
+
+.status-bar {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #d0d7de;
+  font-size: 13px;
+  color: #57606a;
+  flex-shrink: 0;
+}
+
+/* ===== 5. 响应式适配 (屏幕小于 768px 时堆叠) ===== */
+@media screen and (max-width: 768px) {
+  .editor-layout {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+    border-radius: 8px;
+  }
+
+  .editor-wrapper {
+    min-height: 300px;
+    border-bottom: 1px solid #d0d7de;
+  }
+
+  .layout-toggle-btn {
+    flex: 0 0 36px;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #d0d7de;
+    border-bottom: 1px solid #d0d7de;
+    transform: rotate(90deg);
+    /* 移动端竖排时箭头转一下更直观 */
+  }
+
+  .debug-area {
+    flex: 1;
+    min-height: 200px;
+    border-left: none;
+    border-top: 1px solid #d0d7de;
+  }
+}
+
+/* ===== 6. 折叠状态样式 (配合你的 ctrl.previewCollapsed) ===== */
+.editor-layout.collapsed .debug-area {
+  flex: 0 0 0;
+  padding: 0;
+  overflow: hidden;
+  border-left: none;
+  width: 0;
+  min-height: 0;
+}
+
+.editor-layout.collapsed .layout-toggle-btn {
+  /* 按钮保持显示，但右侧完全隐藏 */
+  border-right: none;
+}
+
+.editor-content-title{
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.editor-content-title-toggle-btn{
+  width: 50px;
+  border-radius: 5px;
+}
